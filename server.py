@@ -1,23 +1,23 @@
 from fastapi import FastAPI
+from typing import List
 from pydantic import BaseModel
 
 app = FastAPI()
-
-@app.get("/saudacao/{nome}")
-async def home(nome: str):
-    texto = f'Olá {nome}, seja bem vindo!'
-    return {"mensagem": texto}
-
-@app.get("/quadrado/{numero}")
-async def home(numero: int):
-    resultado = numero * numero
-    texto = f'O quadrado de {numero}, é {resultado}!'
-    return {"mensagem": texto}
-
-class Produto(BaseModel):
+class Animal(BaseModel):
+    id: int
     nome: str
-    preco: float
+    idade: int
+    sexo: str
+    cor: str
 
-@app.post('/produtos')
-def produtos(produto: Produto):
-    return {"mensagem": f'Produto ({produto}) cadastrado com sucesso!'}
+banco: List[Animal] = []
+
+@app.get("animais")
+async def listar_animais():
+    return banco
+
+@app.post('/animais')
+def criar_animal(animal: Animal):
+    banco.append(animal)
+    return {"mensagem": f"{animal.nome} cadastrado com sucesso"}
+
