@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 app = FastAPI()
 class Animal(BaseModel):
-    id: int
+    id: Optional[int]
     nome: str
     idade: int
     sexo: str
