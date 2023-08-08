@@ -1,10 +1,11 @@
+from uuid import uuid4
 from fastapi import FastAPI
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel
 
 app = FastAPI()
 class Animal(BaseModel):
-    id: Optional[int]
+    id: int = None
     nome: str
     idade: int
     sexo: str
@@ -12,12 +13,14 @@ class Animal(BaseModel):
 
 banco: List[Animal] = []
 
-@app.get("animais")
+@app.get("/animais")
 async def listar_animais():
     return banco
 
 @app.post('/animais')
 def criar_animal(animal: Animal):
-    banco.append(animal)
+    if animal.id is None:
+        animal.id = uuid4()
+        banco.append(animal)
     return {"mensagem": f"{animal.nome} cadastrado com sucesso"}
 
