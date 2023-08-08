@@ -24,6 +24,20 @@ def obter_animal(animal_id: str):
             return animal
     return {"error": "Nenhum animal encontrado"}    
 
+@app.delete('/animais/{animal_id}')
+def remover_animal(animal_id: str):
+    posicao = -1
+    for index, animal in enumerate(banco):
+        if animal.id == animal_id:
+            posicao = index
+            break
+
+    if posicao != -1:
+        banco.pop(posicao)
+        return {'mensagem': 'Animal removido com sucesso'}   
+    else:  
+        return {"error": "Nenhum animal encontrado"} 
+
 @app.post('/animais')
 def criar_animal(animal: Animal):
     if animal.id is None:
