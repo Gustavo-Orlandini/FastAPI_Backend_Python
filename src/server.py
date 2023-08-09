@@ -1,9 +1,19 @@
 from uuid import uuid4
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from typing import List
 from pydantic import BaseModel
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class Animal(BaseModel):
     id: int = None
     nome: str
